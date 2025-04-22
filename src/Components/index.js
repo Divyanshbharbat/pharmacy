@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const corsOptions = {
-  origin: 'https://pharmacywebapplication', // Replace with your frontend's origin
+  origin: 'https://pharmacywebapplication.vercel.app', // Replace with your frontend's origin
   credentials: true, // Allow cookies and other credentials
 };
 
