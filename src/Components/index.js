@@ -5,9 +5,9 @@ import cookieParser from 'cookie-parser';
 import bcrypt from 'bcrypt';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import Order from './src/Components/Order.js'
-import User from './src/Components/User.js';
-import Product from './src/Components/Product.js';
+import Order from './Order.js';
+import User from './User.js';
+
 
 // Configure environment variables
 dotenv.config();
@@ -109,7 +109,7 @@ app.delete("/cart/:productName", jwtMiddleware, async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 });
-import Contact from './src/Components/Contact.js';
+import Contact from './Contact.js';
 app.post("/api/contact/submit",async (req, res) => {
   const { name, email, subject, message } = req.body;
 
