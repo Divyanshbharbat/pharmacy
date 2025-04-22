@@ -1,51 +1,101 @@
-import React, { useState } from 'react';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import {toast,Toaster} from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom';
-const PharmacyNavbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // toggle this to test login/logout state
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import './Navbar.css';
+
+const Navbar = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem('cookie') || !!localStorage.getItem('cookie2');
 
   const handleLogout = () => {
-    // Handle logout logic here
-    setIsLoggedIn(false);
-   toast.success('Logged out!');
-   navigate("/")
+    if (localStorage.getItem('cookie')) localStorage.removeItem('cookie');
+    if (localStorage.getItem('cookie2')) localStorage.removeItem('cookie2');
+    navigate('/');
   };
-let navigate=useNavigate()
+
+  const handleNavLinkClick = () => {
+    const navbar = document.getElementById('navbarNav');
+    if (navbar && navbar.classList.contains('show')) {
+      const bsCollapse = new window.bootstrap.Collapse(navbar, { toggle: true });
+      bsCollapse.hide();
+    }
+  };
+
   return (
-    <Navbar expand="lg" sticky="top" style={{ background: 'linear-gradient(to right, #16a085, #00b894)' }} variant="dark">
-      <Container>
-        <Toaster></Toaster>
-        <Navbar.Brand as={Link} to="/" className="fw-bold fs-4 text-white">
-          GreenLife Pharmacy
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="pharmacy-navbar" />
-        <Navbar.Collapse id="pharmacy-navbar">
-          <Nav className="ms-auto align-items-center">
-            <Nav.Link as={Link} to="/home" className="text-white">Home</Nav.Link>
-            <Nav.Link as={Link} to="/about" className="text-white">About</Nav.Link>
-            <Nav.Link as={Link} to="/contact" className="text-white">Contact</Nav.Link>
-            <Nav.Link as={Link} to="/cart" className="text-white">Cart</Nav.Link>
+    <nav
+      className="navbar navbar-expand-lg navbar-dark shadow"
+      style={{
+        background: 'linear-gradient(90deg, #38ef7d 0%, #11998e 100%)',
+        padding: '1rem 2rem',
+      }}
+    >
+      <div className="container-fluid">
+        <NavLink className="navbar-brand fw-bold fs-3 text-white" to="/" onClick={handleNavLinkClick}>
+          Pharmacy
+        </NavLink>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item mx-2">
+              <NavLink className="nav-link text-white fw-semibold" to="/home" onClick={handleNavLinkClick}>
+                Home
+              </NavLink>
+            </li>
+            <li className="nav-item mx-2">
+              <NavLink className="nav-link text-white fw-semibold" to="/about" onClick={handleNavLinkClick}>
+                About
+              </NavLink>
+            </li>
+            <li className="nav-item mx-2">
+              <NavLink className="nav-link text-white fw-semibold" to="/cart" onClick={handleNavLinkClick}>
+                cart
+              </NavLink>
+            </li>
+            <li className="nav-item mx-2">
+              <NavLink className="nav-link text-white fw-semibold" to="/history" onClick={handleNavLinkClick}>
+               History
+              </NavLink>
+            </li>
+            <li className="nav-item mx-2">
+              <NavLink className="nav-link text-white fw-semibold" to="/contact" onClick={handleNavLinkClick}>
+                Contact
+              </NavLink>
+            </li>
 
             {!isLoggedIn ? (
-              <>
-                <Nav.Link as={Link} to="/login" className="text-white">Login</Nav.Link>
-                <Nav.Link as={Link} to="/signup" className="text-white">Signup</Nav.Link>
-              </>
+              <li className="nav-item mx-2">
+                <button
+                  className="btn btn-outline-light fw-bold"
+                  onClick={() => {
+                    navigate('/login');
+                    handleNavLinkClick();
+                  }}
+                >
+                  Login
+                </button>
+              </li>
             ) : (
-              <>
-                
-                <Button variant="outline-light" onClick={handleLogout}>
+              <li className="nav-item mx-2">
+                <button className="btn btn-danger fw-bold" onClick={handleLogout}>
                   Logout
-                </Button>
-              </>
+                </button>
+              </li>
             )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 };
 
-export default PharmacyNavbar;
+export default Navbar;

@@ -13,7 +13,7 @@ const Order = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("cookie");
 
     if (!token) {
       console.error("No token found");
@@ -21,7 +21,7 @@ const Order = () => {
     }
 
     axios
-      .get("https://pharmacy-2-bzdr.onrender.com/cart", {
+      .get("http://localhost:3000/cart", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -49,7 +49,7 @@ const Order = () => {
   };
 
   const handlePlaceOrder = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("cookie");
 
     if (!token) {
       Swal.fire("Login Required", "Please login to place your order.", "warning");

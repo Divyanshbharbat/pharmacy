@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const History = () => {
   const [orderHistory, setOrderHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  let navigate=useNavigate()
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("cookie");
 
     if (!token) {
       alert("Please log in to view your order history.");
-      return;
+     navigate("/login")
     }
 
     axios

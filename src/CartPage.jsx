@@ -6,13 +6,14 @@ import axios from "axios";
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("cookie");
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) {
-      toast.warn("Please login to view your cart.");
-      return;
+      toast.error("Please login to view your cart.");
+
+      navigate("/login")
     }
 
     const fetchCartItems = async () => {
@@ -35,7 +36,8 @@ const CartPage = () => {
 
   const handleDelete = async (productName) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/cart/${productName}`, {
+      // const response = await axios.delete(`http://localhost:3000/cart/${productName}`, {
+      const response = await axios.delete(`https://pharmacy-2-bzdr.onrender.com/cart/${productName}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

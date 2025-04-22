@@ -1,142 +1,100 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { toast, Toaster } from 'react-hot-toast';
 
-const Landing = () => {
-  const navigate = useNavigate();
-
+const PharmacyLandingPage = () => {
   useEffect(() => {
-    AOS.init({ duration: 1000 });
+    AOS.init({ duration: 1200 });
   }, []);
 
-  const handleShopNow = () => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      toast.success('Welcome back! Redirecting to home...');
-      setTimeout(() => navigate('/home'), 1000);
-    } else {
-      toast.error('Please login to continue');
-      setTimeout(() => navigate('/login'), 1000);
-    }
-  };
-
   return (
-    <div className="landing-page">
-      <Toaster position="top-center" />
-
+    <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Hero Section */}
-      <header
-        className="text-white text-center"
-        style={{
-       backgroundColor:"blue",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '120px 0',
-        }}
-        data-aos="fade-down"
-      >
-        <div className="container">
-          <h1 className="display-3 fw-bold">Welcome to Our Pharmacy</h1>
-          <p className="lead">Reliable medicines. Trusted care. Delivered to your door.</p>
-          <button className="btn btn-light btn-lg mt-4" onClick={handleShopNow}>
-            Show Now
-          </button>
-        </div>
-      </header>
+      <section className="text-white" style={{
+        background: 'linear-gradient(135deg, #0f9b0f 0%, #000000 100%)',
+        padding: '80px 0'
+      }}>
+        <Container>
+          <Row className="align-items-center">
+            <Col md={6} data-aos="fade-right">
+              <h1 className="display-4 fw-bold">Your Trusted Online Pharmacy</h1>
+              <p className="lead mt-4">Order medicine, health essentials, and wellness products with a single click.</p>
+              <Button variant="light" className="mt-3 fw-semibold">Shop Now</Button>
+            </Col>
+            <Col md={6} data-aos="fade-left">
+              <img src="https://img.freepik.com/free-vector/medical-prescription-concept-illustration_114360-6595.jpg?ga=GA1.1.109368830.1743779497&semt=ais_hybrid&w=740" alt="Pharmacy" className="img-fluid rounded" />
+            </Col>
+          </Row>
+        </Container>
+      </section>
 
-      {/* Why Choose Us */}
-      <section className="py-5 bg-light" data-aos="fade-up">
-        <div className="container text-center">
-          <h2 className="mb-5 text-success">Why Choose Us?</h2>
-          <div className="row">
-            <div className="col-md-4" data-aos="zoom-in">
-              <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" width="80" alt="Genuine" />
-              <h5 className="mt-3">100% Genuine Products</h5>
-              <p>All our medicines are sourced from verified pharmaceutical companies.</p>
-            </div>
-            <div className="col-md-4" data-aos="zoom-in">
-              <img src="https://cdn-icons-png.flaticon.com/512/235/235861.png" width="80" alt="Delivery" />
+      {/* Features */}
+      <section className="py-5 bg-light">
+        <Container>
+          <h2 className="text-center mb-4" data-aos="fade-up">Why Choose Us?</h2>
+          <Row className="text-center">
+            <Col md={4} data-aos="fade-up">
+              <img src="https://img.icons8.com/ios-filled/100/0f9b0f/medicine.png" alt="Genuine Medicines" />
+              <h5 className="mt-3">Genuine Medicines</h5>
+              <p>All medicines are sourced directly from licensed pharmacies and manufacturers.</p>
+            </Col>
+            <Col md={4} data-aos="fade-up" data-aos-delay="100">
+              <img src="https://img.icons8.com/ios-filled/100/0f9b0f/delivery.png" alt="Fast Delivery" />
               <h5 className="mt-3">Fast Delivery</h5>
-              <p>Get your medications delivered to your doorstep on time, every time.</p>
-            </div>
-            <div className="col-md-4" data-aos="zoom-in">
-              <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" width="80" alt="Support" />
+              <p>Receive your orders within 24–48 hours in all major cities.</p>
+            </Col>
+            <Col md={4} data-aos="fade-up" data-aos-delay="200">
+              <img src="https://img.icons8.com/ios-filled/100/0f9b0f/customer-support.png" alt="24/7 Support" />
               <h5 className="mt-3">24/7 Support</h5>
-              <p>Expert pharmacists available round the clock to assist you.</p>
-            </div>
-          </div>
-        </div>
+              <p>Chat with pharmacists anytime for prescription and health advice.</p>
+            </Col>
+          </Row>
+        </Container>
       </section>
 
-      {/* Services */}
-      <section
-        className="py-5 text-white"
-        style={{ background: 'linear-gradient(to right, #00c6ff, #0072ff)' }}
-        data-aos="fade-up"
-      >
-        <div className="container text-center">
-          <h2 className="mb-4">Our Services</h2>
-          <div className="row">
-            <div className="col-md-4">
-              <img src="https://cdn-icons-png.flaticon.com/512/3756/3756931.png" width="70" alt="Prescription" />
-              <h5 className="mt-3">Prescription Management</h5>
-              <p>We manage, refill, and deliver prescriptions for chronic conditions.</p>
-            </div>
-            <div className="col-md-4">
-              <img src="https://cdn-icons-png.flaticon.com/512/2356/2356981.png" width="70" alt="Consult" />
-              <h5 className="mt-3">Free Consultations</h5>
-              <p>Talk to a certified pharmacist online or in-store anytime.</p>
-            </div>
-            <div className="col-md-4">
-              <img src="https://cdn-icons-png.flaticon.com/512/2942/2942846.png" width="70" alt="Reminders" />
-              <h5 className="mt-3">Smart Reminders</h5>
-              <p>Get notified before your prescriptions run out or refills are due.</p>
-            </div>
-          </div>
-        </div>
+      {/* About Us */}
+      <section className="py-5 text-white" style={{ background: '#0f9b0f' }}>
+        <Container>
+          <Row className="align-items-center">
+            <Col md={6} data-aos="fade-right">
+              <img src="https://img.freepik.com/free-vector/doctor-explaining-patient-pharmacy_74855-14169.jpg" alt="About Pharmacy" className="img-fluid rounded shadow" />
+            </Col>
+            <Col md={6} data-aos="fade-left">
+              <h2>About Our Pharmacy</h2>
+              <p className="mt-3">We are committed to delivering authentic medicines at affordable prices. Our platform ensures every product is verified, safe, and delivered with care. With over 10,000+ satisfied customers, we are proud to be a trusted name in online healthcare.</p>
+              <Button variant="light" className="fw-semibold">Learn More</Button>
+            </Col>
+          </Row>
+        </Container>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-5 bg-light" data-aos="fade-up">
-        <div className="container text-center">
-          <h2 className="mb-4 text-primary">What Our Customers Say</h2>
-          <div className="row">
-            <div className="col-md-4">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" className="rounded-circle mb-2" width="80" alt="Customer" />
-              <p className="fst-italic">“Super fast delivery and best discounts!”</p>
-              <strong>- Neha S.</strong>
-            </div>
-            <div className="col-md-4">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" className="rounded-circle mb-2" width="80" alt="Customer" />
-              <p className="fst-italic">“Helpful staff and verified products. Highly recommend.”</p>
-              <strong>- Ankit R.</strong>
-            </div>
-            <div className="col-md-4">
-              <img src="https://randomuser.me/api/portraits/women/55.jpg" className="rounded-circle mb-2" width="80" alt="Customer" />
-              <p className="fst-italic">“Best online medical store in my city!”</p>
-              <strong>- Kavya M.</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Health Articles */}
-      <section className="py-5 text-white" style={{ background: 'linear-gradient(to right, #1D976C, #93F9B9)' }} data-aos="fade-up">
-        <div className="container text-center">
-          <h2 className="mb-4">Latest Health Articles</h2>
-          <p className="lead">Stay informed with curated health news, wellness tips, and medical breakthroughs.</p>
-        </div>
+      {/* App Download Section */}
+      <section className="py-5 bg-white">
+        <Container>
+          <Row className="align-items-center text-center text-md-start">
+            <Col md={6} data-aos="zoom-in">
+              <h3 className="fw-bold">Download Our Mobile App</h3>
+              <p className="mt-2">Order medicine and track deliveries on the go!</p>
+              <Button variant="success" className="mt-2">Download App</Button>
+            </Col>
+            <Col md={6} data-aos="zoom-in">
+              <img src="https://img.freepik.com/free-vector/mobile-banking-isometric_98292-6944.jpg" alt="App Download" className="img-fluid" />
+            </Col>
+          </Row>
+        </Container>
       </section>
 
       {/* Footer */}
-      <footer className="text-center py-4" style={{ backgroundColor: '#111', color: 'white' }}>
-        <p>&copy; 2025 Our Pharmacy. All rights reserved.</p>
+      <footer className="bg-dark text-white text-center py-4">
+        <Container>
+          <p>&copy; {new Date().getFullYear()} GreenLeaf Pharmacy. All rights reserved.</p>
+          <p>Email: support@greenleafpharma.com | Phone: +91-9876543210</p>
+        </Container>
       </footer>
     </div>
   );
 };
 
-export default Landing;
+export default PharmacyLandingPage;

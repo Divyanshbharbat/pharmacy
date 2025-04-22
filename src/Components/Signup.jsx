@@ -1,126 +1,118 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-
-import { useNavigate } from 'react-router-dom';
-import { toast, Toaster } from 'react-hot-toast'
-import { NavLink } from 'react-router-dom';
-import process from 'process';
-import './Signup.css'
-
+import { useNavigate, NavLink } from 'react-router-dom';
+import { toast, Toaster } from 'react-hot-toast';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import './Signup.css';
+//https://pharmacy-2-bzdr.onrender.com/login
 const Signup = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const navigate = useNavigate();  // Correct way to use navigation in React Router v6
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+useEffect(()=>{
+ let y= localStorage.getItem("cookie")
+  if(y){
+    navigate("/home")
+  }
+},[])
   const onSubmit = async (data) => {
-
-
     try {
-
-      const response = await axios.post(`https://pharmacy-2-bzdr.onrender.com/signup`, data,{ withCredentials: true });
-
+      // const response = await axios.post(`https://pharmacy-2-bzdr.onrender.com/signup`, data,{
+      //   withCredentials:true,
+      // });
+      const response = await axios.post('https://pharmacy-2-bzdr.onrender.com/signup', data,{
+        withCredentials:true,
+      });
       if (response.data === 'success') {
-        toast.success("Your Account Created Successfully")
-        setTimeout(() => {
-          navigate("/login");
-
-        }, 1000)  // Navigate after successful signup
+        toast.success("Account created successfully 🎉");
+        setTimeout(() => navigate("/login"), 1000);
       }
     } catch (error) {
-      toast.error("Email is Already Registered")
-      console.log(error)
+      toast.error("Email is already registered ❌");
+      console.error(error);
     }
   };
 
   return (
+    <div
+      className="container-fluid d-flex align-items-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right, #c2e9fb, #e0f7fa)",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+      }}
+    >
+      <Toaster />
+      <div className="row w-100 justify-content-center align-items-center px-3">
+        {/* Left Side - Signup Form */}
+        <div className="col-lg-5 col-md-8" data-aos="fade-right">
+          <div className="p-5 bg-white rounded-4 shadow-lg">
+            <h2 className="text-center mb-3 fw-semibold text-primary">Create Your Account</h2>
+            <p className="text-center text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+              Join our community and start your journey with us.
+            </p>
 
-    <>
-      <div className="row my-5">
-        <div className="col-lg-6 col-sm-12 ">
-          <div className="bg-primary p-3 m-3" style={{ borderRadius: "2vh" }}>
-            <h1 className="text-center   my-5" style={{ fontSize: "6vh" }}>Signup</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="form-group mb-4">
+                <input
+                  type="text"
+                  {...register("username", { required: "Username is required" })}
+                  className="form-control form-control-lg"
+                  placeholder="Username"
+                  style={{ backgroundColor: "#f2f6fc" }}
+                />
+                {errors.username && <p className="text-danger mt-2">{errors.username.message}</p>}
+              </div>
 
+              <div className="form-group mb-4">
+                <input
+                  type="email"
+                  {...register("email", { required: "Email is required" })}
+                  className="form-control form-control-lg"
+                  placeholder="Email"
+                  style={{ backgroundColor: "#f2f6fc" }}
+                />
+                {errors.email && <p className="text-danger mt-2">{errors.email.message}</p>}
+              </div>
 
-            <div className="container-fluid d-flex justify-content-center py-4 my-3 ">
-              <form className='b' onSubmit={handleSubmit(onSubmit)}>
-                <div className="input my-3 mx-3">
-                  <input
-                    type="text"
-                    {...register("username", { required: "Username is required" })}
-                    placeholder="Username"
-                    style={{
-                      backgroundColor: "#eaeaea",
-                      border: "none",
-                      height: "6vh",
-                      borderRadius: '1vh',
-                      padding: "1vh"
-                    }}
-                  />
-                  {errors.username && <p className='my-2 text-white'>{errors.username.message}</p>}
-                </div>
-                <div className="input my-3 mx-3">
-                  <input
-                    type="email"
-                    {...register("email", { required: "Email is required" })}
-                    placeholder="Email"
-                    style={{
-                      backgroundColor: "#eaeaea",
-                      border: "none",
-                      height: "6vh",
-                      borderRadius: '1vh',
-                      padding: "1vh"
-                    }}
-                  />
-                  {errors.email && <p className='my-2 text-white'>{errors.email.message}</p>}
-                </div>
-                <div className="input my-3 mx-3">
-                  <input
-                    type='password' min={8} id='password' name='password'
-                    {...register("password", { required: "Password is required" })}
-                    placeholder="Password"
-                    style={{
-                      backgroundColor: "#eaeaea",
-                      border: "none",
-                      height: "6vh",
-                      borderRadius: '1vh',
-                      padding: "1vh"
-                    }}
-                  />
-                  {errors.password && <p className='my-2 text-white'>{errors.password.message}</p>}
-                </div>
-                <div className="text-white my-4 text-center">
-                  <NavLink to='/contact' className='text-white'> Forgot password?</NavLink>
+              <div className="form-group mb-4">
+                <input
+                  type="password"
+                  {...register("password", { required: "Password is required", minLength: 6 })}
+                  className="form-control form-control-lg"
+                  placeholder="Password"
+                  style={{ backgroundColor: "#f2f6fc" }}
+                />
+                {errors.password && <p className="text-danger mt-2">{errors.password.message}</p>}
+              </div>
 
-                </div>
-                <div className="button d-flex justify-content-center">
-                  <button className="btn btn-dark mx-3"><NavLink to="/login" className='text-white ' style={{ textDecoration: "none" }}>Login</NavLink></button>
-                  <button type="submit" className="btn btn-dark mx-3">Signup</button>
-
-                </div>
-              </form>
-            </div>
+              <div className="d-flex justify-content-between">
+                <NavLink to="/login" className="btn btn-outline-primary px-4">Login</NavLink>
+                <button type="submit" className="btn btn-primary px-5">Signup</button>
+              </div>
+            </form>
           </div>
-
-
-
-
-
-
         </div>
 
-        <div className="col-lg-6 col-sm-12">
-          <img className='img-fluid' src='https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg?t=st=1737555366~exp=1737558966~hmac=d4c6939a419494a57f94c338c13e7b26084b8ac3331378dbfe627266d94d8be8&w=740' alt="" />
+        {/* Right Side - Illustration */}
+        <div className="col-lg-6 mt-5 mt-lg-0 text-center" data-aos="fade-left">
+          <img
+            src="https://img.freepik.com/free-vector/account-concept-illustration_114360-3766.jpg?t=st=1712747557~exp=1712751157~hmac=b801d1622e1be891418b9ac8b6254ce7e4ff88e10967c63d69cb95a8cfc96b5e&w=740"
+            alt="Signup Visual"
+            className="img-fluid rounded-4 shadow-sm"
+            style={{ maxHeight: '480px' }}
+          />
+          <p className="text-muted mt-3">
+            Secure and simple onboarding for your experience.
+          </p>
         </div>
       </div>
-
-
-
-      <Toaster />
-
-
-
-
-    </>
+    </div>
   );
 };
 

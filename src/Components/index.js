@@ -22,7 +22,10 @@ const corsOptions = {
   origin: 'https://pharmacywebapplication.vercel.app', // Replace with your frontend's origin
   credentials: true, // Allow cookies and other credentials
 };
-
+// const corsOptions = {
+//   origin: '*',
+//   credentials: true,
+// };
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
@@ -31,12 +34,15 @@ const jwtMiddleware = (req, res, next) => {
   const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).send("fail");
+     return res.status(401).send("fail");
+   
   }
-
+ 
   try {
     const decoded = jwt.verify(token, "divyansh");
-    req.user = decoded; // Attach the decoded token to the request object
+   
+    req.user = decoded;
+    console.log(req.user) // Attach the decoded token to the request object
     // Log user info for debugging
     next(); // Proceed with the next middleware
   } catch (error) {
@@ -44,7 +50,37 @@ const jwtMiddleware = (req, res, next) => {
      res.send("fail");
   }
 };
+app.post("/add", jwtMiddleware, async (req, res) => {
+  try {
+    console.log(req.body)
+    const { medicine } = req.body;  // Full product data
+    
 
+    // Find the user based on the JWT
+    const user = await User.findOne({ username: req.user.username });
+   
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Check if the medicine is already in the cart
+    const isMedicineInCart = user.cart.some(item => item.name === medicine.name); 
+  
+    if (isMedicineInCart) {
+      return res.status(400).json({ message: "This medicine is already in your cart." });
+    }
+
+    // Add the medicine to the user's cart (storing the full product data)
+    user.cart.push(medicine);
+
+    // Save the updated user data to the database
+    const updatedUser = await user.save();
+   
+
+    res.status(200).json({ message: "success" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error adding product to cart" });
+  }
+});
 app.post("/place/order", jwtMiddleware, async (req, res) => {
   try {
   
@@ -111,6 +147,7 @@ app.delete("/cart/:productName", jwtMiddleware, async (req, res) => {
 });
 import Contact from './Contact.js';
 app.post("/api/contact/submit",async (req, res) => {
+  console.log(req.body)
   const { name, email, subject, message } = req.body;
 
   // Validate the request body
@@ -128,37 +165,7 @@ await r.save();
     
   });
 });
-app.post("/add", jwtMiddleware, async (req, res) => {
-  try {
-    console.log(req.body)
-    const { medicine } = req.body;  // Full product data
-    
 
-    // Find the user based on the JWT
-    const user = await User.findOne({ username: req.user.username });
-   
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    // Check if the medicine is already in the cart
-    const isMedicineInCart = user.cart.some(item => item.name === medicine.name); 
-  
-    if (isMedicineInCart) {
-      return res.status(400).json({ message: "This medicine is already in your cart." });
-    }
-
-    // Add the medicine to the user's cart (storing the full product data)
-    user.cart.push(medicine);
-
-    // Save the updated user data to the database
-    const updatedUser = await user.save();
-   
-
-    res.status(200).json({ message: "Product added to cart" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error adding product to cart" });
-  }
-});
 
 app.get('/order/history', async (req, res) => {
   try {
@@ -189,7 +196,7 @@ app.get('/order/history', async (req, res) => {
 // Sign up route
 app.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
-
+console.log(req.body)
   if (!username || !email || !password) {
     return res.status(400).json({ error: "Username, email, and password are required" });
   }

@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import para from '../src/assets/paracetaml.jpg'
+// import Ibu from '../src/assets/ibuprofgen.jpeg';
+// import Aspirin from '../src/assets/aspirin.jpeg';
+// import vitamin from '../src/assets/vitamin.jpeg';
+// import Folic from '../src/assets/folic acid.jpeg';
+// import meta from '../src/assets/metamorphin.jpeg';
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-import { toast,Toaster } from 'react-hot-toast';
-import './Home.css';
-import Aspirin from '../src/assets/aspirin.jpeg';
-
-import Folic from '../src/assets/folic acid.jpeg';
-import Ibu from '../src/assets/ibuprofgen.jpeg';
+import { toast ,Toaster} from 'react-hot-toast';
+import axios from 'axios';
+// Sample image imports
 import para from '../src/assets/paracetaml.jpg';
+import Ibu from '../src/assets/ibuprofgen.jpeg';
+import Aspirin from '../src/assets/aspirin.jpeg';
 import vitamin from '../src/assets/vitamin.jpeg';
+import Folic from '../src/assets/folic acid.jpeg';
 import meta from '../src/assets/metamorphin.jpeg';
 
-
 const Home = () => {
+  const navigate = useNavigate();
+
   const [featuredMeds, setFeaturedMeds] = useState([
     {
       name: 'Paracetamol 500mg',
@@ -52,16 +59,7 @@ const Home = () => {
       image: Folic,
       category: 'Vitamins',
     },
-    {
-      name: 'Metformin 500mg',
-      price: '80',
-      desc: 'Helps control blood sugar levels.',
-      image: meta,
-      category: 'Diabetes',
-    },
   ]);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -69,14 +67,14 @@ const Home = () => {
 
   const addToCart = async (medicine) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('cookie');
+      console.log(token)
       if (!token) {
         toast.error('You must be logged in to add medicines to your cart!');
         return;
       }
-
-      const response = await axios.post(
-        'https://pharmacy-2-bzdr.onrender.com/add',
+   // 'https://pharmacy-2-bzdr.onrender.com/add',
+      const response = await axios.post('http://localhost:3000/add',
         { medicine },
         {
           headers: {
@@ -84,139 +82,168 @@ const Home = () => {
           },
         }
       );
-
-      if (response.status === 200) {
+console.log(response.data)
+      if (response.data.message=="success") {
         toast.success('Product added to cart');
       }
     } catch (error) {
       console.error(error);
-      toast.error('Error adding product to cart');
+      toast.error('Product Already Added to Cart');
     }
   };
 
   return (
-    <div className="home" style={{ fontFamily: 'Poppins' }}>
-      <Toaster position="top-right" reverseOrder={false} />
-
+    <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Hero Section */}
-      <section className="hero text-dark text-center py-5" style={{ background: 'linear-gradient(to right, #00c9ff, #92fe9d)' }} data-aos="fade-down">
-        <h1 className="display-4 fw-bold">Welcome to GreenLife Pharmacy</h1>
-        <p className="lead">Your trusted online medical store for genuine and affordable medicines.</p>
-        <button className="btn btn-success btn-lg mt-3" onClick={() => navigate('#featuredMeds')}>Shop Now</button>
-      </section>
+      <Container className="my-4">
+      <Row className="align-items-center">
+        {/* Left side: Text */}
+        <Col md={6}>
+          <Card className="text-dark text-center" >
+            <Toaster/>
+            <Card.Body className="py-5">
+              <h1 data-aos="fade-down" className="fw-bold mb-3">Welcome to GreenLeaf Pharmacy</h1>
+              <p data-aos="fade-up">Your one-stop online store for reliable, affordable medicines and healthcare essentials.</p>
+              <Button variant="success" className="mt-3 fw-semibold " onClick={() => navigate('/')}>
+                Shop Now
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        {/* Right side: Image */}
+        <Col md={6}>
+          <img 
+            src='https://img.freepik.com/premium-vector/pharmacy-drugs-bottle-pills-illustration_128772-628.jpg?ga=GA1.1.860258030.1745240119&semt=ais_hybrid&w=740'
+            alt="Pharmacy" 
+            className="img-fluid rounded shadow-lg" 
+            style={{ maxHeight: '400px', objectFit: 'cover' }} 
+          />
+        </Col>
+      </Row>
+    </Container>
 
       {/* Featured Medicines */}
-      <section className="container my-5" id="featuredMeds" data-aos="fade-up">
-        <h2 className="text-center mb-4">Featured Medicines</h2>
-        <div className="row">
-          {featuredMeds.map((med, index) => (
-            <div className="col-md-4 mb-4" key={index}>
-              <div className="card h-100 shadow-sm border-0">
-                <img src={med.image} className="card-img-top" alt={med.name} />
-                <div className="card-body">
-                  <h5 className="card-title">{med.name}</h5>
-                  <p className="card-text">{med.desc}</p>
-                  <p className="fw-bold text-success">{med.price}</p>
-                  <button
-                    className="btn btn-outline-success"
-                    onClick={() => addToCart(med)}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <Container className="my-4">
+        <Card className="p-4 shadow-sm border-0" style={{ background: 'linear-gradient(135deg, #e0f7fa, #f1f8e9)' }}>
+          <h2 className="text-center mb-4" data-aos="fade-up">Featured Medicines</h2>
+          <Row>
+            {featuredMeds.map((med, idx) => (
+              <Col md={4} className="mb-4" key={idx} data-aos="zoom-in" data-aos-delay={(idx % 6) * 100}>
+                <Card className="shadow-sm h-100 border-0">
+                  <Card.Img
+                    variant="top"
+                    src={med.image}
+                    alt={med.name}
+                    className="img-fluid p-3"
+                    style={{ maxHeight: '220px', objectFit: 'contain' }}
+                  />
+                  <Card.Body>
+                    <h5 className="fw-bold">{med.name}</h5>
+                    <Badge bg="success" className="mb-2">{med.category}</Badge>
+                    <Card.Text>{med.desc}</Card.Text>
+                    <h6 className="fw-semibold text-success">₹{med.price}</h6>
+                    <Button variant="success" className="mt-2" onClick={() => addToCart(med)}>
+                      Add to Cart
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Card>
+      </Container>
 
-      {/* About Us */}
-      <section className="py-5 bg-light" data-aos="fade-up">
-        <div className="container text-center">
-          <h2 className="mb-4">About GreenLife Pharmacy</h2>
-          <p className="lead">
-            Established in 2010, GreenLife Pharmacy has been providing quality healthcare solutions to millions across the country. We aim to deliver accessible, affordable, and authentic medical services with the highest level of customer satisfaction.
-          </p>
-          <img src="https://img.freepik.com/free-vector/medical-design-poster-with-original-medicinal-capsule-consisting-green-blue-parts-leaves-as-life-symbol-illustration_1284-53606.jpg?ga=GA1.1.109368830.1743779497&semt=ais_hybrid&w=740" className="img-fluid mt-3 rounded" alt="pharmacy" />
-        </div>
-      </section>
+      {/* About Us Section */}
+      <Container className="my-4">
+        <Card className="p-4 shadow-sm border-0" style={{ background: 'linear-gradient(135deg, #fdfbfb, #ebedee)' }}>
+          <Row>
+            <Col md={6}>
+              <h2 className="mb-4" data-aos="fade-up">About Us</h2>
+              <p data-aos="fade-up" className="lead">
+                GreenLeaf Pharmacy is committed to providing high-quality, affordable medicines, and healthcare products. 
+                With our online platform, you can get your medicines delivered to your doorstep with ease.
+              </p>
+              <Button variant="success" onClick={() => navigate('/about')}>
+                Learn More
+              </Button>
+            </Col>
+            <Col md={6} data-aos="fade-left">
+              <img
+                src="https://img.freepik.com/free-photo/young-hispanic-woman-pharmacist-smiling-confident-standing-with-arms-crossed-gesture-pharmacy_839833-7087.jpg?ga=GA1.1.860258030.1745240119&semt=ais_hybrid&w=740"
+                alt="Pharmacy"
+                className="img-fluid rounded shadow-lg"
+              />
+            </Col>
+          </Row>
+        </Card>
+      </Container>
 
-      {/* Our Qualities */}
-      <section className="py-5 text-white" style={{ background: 'linear-gradient(to right, #2BC0E4, #EAECC6)' }} data-aos="fade-up">
-        <div className="container text-center">
-          <h2 className="mb-4">What Makes Us Different?</h2>
-          <div className="row">
-            <div className="col-md-3">
-              <h5>✅ Certified Pharmacists</h5>
-              <p>Qualified experts ensure accuracy and safety in every order.</p>
-            </div>
-            <div className="col-md-3">
-              <h5>📦 Express Delivery</h5>
-              <p>Most orders are delivered within 24 hours.</p>
-            </div>
-            <div className="col-md-3">
-              <h5>📱 App Integration</h5>
-              <p>Seamless experience across mobile and desktop.</p>
-            </div>
-            <div className="col-md-3">
-              <h5>💳 Secure Payment</h5>
-              <p>Encrypted transactions with all major payment options.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Customer Testimonials Section */}
+      <Container className="my-4">
+        <Card className="p-4 shadow-sm border-0" style={{ background: 'linear-gradient(135deg, #fffbd5, #b20a2c)' }}>
+          <h2 className="text-center text-white mb-4" data-aos="fade-up">What Our Customers Say</h2>
+          <Row>
+            <Col md={4} data-aos="fade-up" data-aos-delay="100">
+              <Card className="shadow-sm border-0">
+                <Card.Body>
+                  <p>"GreenLeaf Pharmacy is my go-to online store for all my health needs. Fast delivery and great prices!"</p>
+                  <h6>- John Doe</h6>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4} data-aos="fade-up" data-aos-delay="200">
+              <Card className="shadow-sm border-0">
+                <Card.Body>
+                  <p>"Excellent customer service and prompt deliveries. The quality of medicines is top-notch!"</p>
+                  <h6>- Jane Smith</h6>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4} data-aos="fade-up" data-aos-delay="300">
+              <Card className="shadow-sm border-0">
+                <Card.Body>
+                  <p>"I’ve been using GreenLeaf for over a year. They offer a wide range of medicines at unbeatable prices."</p>
+                  <h6>- Mark Johnson</h6>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Card>
+      </Container>
 
-      {/* Our Team */}
-      <section className="container py-5" data-aos="fade-up">
-        <h2 className="text-center mb-4">Meet Our Experts</h2>
-        <div className="row text-center">
-          <div className="col-md-4">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" className="rounded-circle mb-2" width="100" alt="Team" />
-            <h5>Dr. Rahul Mehta</h5>
-            <p>Chief Pharmacist</p>
-          </div>
-          <div className="col-md-4">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" className="rounded-circle mb-2" width="100" alt="Team" />
-            <h5>Dr. Shruti Agarwal</h5>
-            <p>Nutrition Specialist</p>
-          </div>
-          <div className="col-md-4">
-            <img src="https://randomuser.me/api/portraits/men/76.jpg" className="rounded-circle mb-2" width="100" alt="Team" />
-            <h5>Mr. Anand Verma</h5>
-            <p>Health Advisor</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="py-5 text-white text-center" style={{ background: 'linear-gradient(to right, #56CCF2, #2F80ED)' }} data-aos="fade-up">
-        <div className="container">
-          <h2 className="mb-4">Our Impact</h2>
-          <div className="row">
-            <div className="col-md-3">
-              <h3>1M+</h3>
-              <p>Happy Customers</p>
-            </div>
-            <div className="col-md-3">
-              <h3>50K+</h3>
-              <p>Orders Delivered</p>
-            </div>
-            <div className="col-md-3">
-              <h3>100+</h3>
-              <p>Trusted Brands</p>
-            </div>
-            <div className="col-md-3">
-              <h3>24/7</h3>
-              <p>Customer Support</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="text-center py-4 bg-dark text-white">
-        <p>&copy; 2025 GreenLife Pharmacy | Your health, our priority.</p>
-      </footer>
+      {/* Health Tips Section */}
+      <Container className="my-4">
+        <Card className="p-4 shadow-sm border-0" style={{ background: 'linear-gradient(135deg, #ffecd2, #fcb69f)' }}>
+          <h2 className="text-center mb-4" data-aos="fade-up">Health Tips</h2>
+          <Row>
+            <Col md={4} data-aos="fade-up" data-aos-delay="100">
+              <Card className="shadow-sm border-0">
+                <Card.Body>
+                  <h5 className="fw-bold">Drink Plenty of Water</h5>
+                  <p>Stay hydrated for better energy and improved overall health.</p>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4} data-aos="fade-up" data-aos-delay="200">
+              <Card className="shadow-sm border-0">
+                <Card.Body>
+                  <h5 className="fw-bold">Regular Exercise</h5>
+                  <p>Maintaining an active lifestyle helps boost immunity and mental health.</p>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4} data-aos="fade-up" data-aos-delay="300">
+              <Card className="shadow-sm border-0">
+                <Card.Body>
+                  <h5 className="fw-bold">Eat a Balanced Diet</h5>
+                  <p>Ensure you’re getting the right nutrients for optimal health.</p>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Card>
+      </Container>
     </div>
   );
 };

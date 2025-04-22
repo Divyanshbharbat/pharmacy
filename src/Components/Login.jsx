@@ -1,94 +1,114 @@
-import React from 'react';
+//  await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data, { withCredentials: true })
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import './Login.css'
-import { useNavigate } from 'react-router-dom';
-import { toast, Toaster } from 'react-hot-toast'
-import { NavLink } from 'react-router-dom';
+import './Login.css';
+import { useNavigate, NavLink } from 'react-router-dom';
+import { toast, Toaster } from 'react-hot-toast';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
-  let navigate = useNavigate()
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+useEffect(()=>{
+ let y= localStorage.getItem("cookie")
+  if(y){
+    navigate("/home")
+  }
+},[])
   const onSubmit = async (data) => {
-
-
-    await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data, { withCredentials: true })
-
-    .then((res) => {
-      console.log(res.data);
-      const token = res.data.token;
-      
-      // Store the token in localStorage with a key
-      localStorage.setItem("token", token);
-    
+    try {
+     //  await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data, { withCredentials: true })
+      // const res = await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data,{withCredentials:true,});
+      const res = await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data,{withCredentials:true,});
       if (res.data.message === "success") {
-        toast.success("Login Successfully");
-        setTimeout(() => {
-          navigate("/home");
-        }, 1000);
+        localStorage.setItem("cookie", res.data.token);
+        toast.success("Login Successful 🎉");
+        setTimeout(() => navigate("/home"), 2000);
+      } else {
+        toast.error(res.data.message || "Invalid credentials ❌");
       }
-    })
-      .catch(error => {
-        toast.error("Something went Wrong")
-      });
+    } catch (err) {
+      toast.error("Something went wrong! ❌");
+      console.error("Login error:", err);
+    }
   };
 
   return (
-    <div id='login' className="container-fluid " style={{ height: "100vh", width: "100%" }}>
-      <Toaster className="bg-dark text-white" />
-      <div className="row d-flex">
-        <div className="col-lg-6 col-sm-12">
-          <div className="container-fluid d-flex justify-content-center my-4 py-5  ">
-            <div className="head border  " id='box' style={{ height: '70vh', width: "90vh", borderRadius: "3vh" }}>
-              <h1 className="text-center  my-5" style={{color:"black",fontSize:"6vh"}}>Login</h1>
-              <div className="container-fluid  text-center my-5">
-                <form className='b' onSubmit={handleSubmit(onSubmit)}>
-                  <div className="input my-5 mx-3">
-                    <input
-                      type="text"
-                      {...register("username", { required: "Email is required" })}
-                      placeholder="Username"
-                      style={{
-                        backgroundColor: "#eaeaea",
-                        border: "none",
-                        height: "6vh",
-                        borderRadius: '1vh',
-                        padding: "1vh"
-                      }}
-                    />
-                    {errors.username && <p className='my-2 text-white'>{errors.username.message}</p>}
-                  </div>
-                  <div className="input my-5 mx-3">
-                    <input
-                      type="password"
-                      {...register("password", { required: "Password is required" })}
-                      placeholder="Password" name='password' id='password'
-                      style={{
-                        backgroundColor: "#eaeaea",
-                        border: "none",
-                        height: "6vh",
-                        borderRadius: '1vh',
-                        padding: "1vh"
-                      }}
-                    />
-                    {errors.password && <p className='my-2 text-white'>{errors.password.message}</p>}
-                  </div>
-                  <div className="text-primary my-3">
-                    <NavLink to='/contact' className='text-white'> Forgot password?</NavLink>
+    <div
+      className="container-fluid d-flex align-items-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right, #d7e1ec, #f4f9ff)",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+      }}
+    >
+      <Toaster />
+      <div className="row w-100 justify-content-center align-items-center px-3">
+        {/* Left Side - Login Form */}
+        <div className="col-lg-5 col-md-8" data-aos="fade-right">
+          <div className="p-5 bg-white rounded-4 shadow-lg">
+            <h2 className="text-center mb-3 fw-semibold text-primary">Login to Continue</h2>
+            <p className="text-center text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+              Access your dashboard, manage donations, and explore new features.
+            </p>
 
-                  </div>
-                  <div className="button d-flex justify-content-center">
-                    <NavLink to={'/signup'}> <button type="button" id='btn' className="btn  mx-3">Signup</button></NavLink>
-                    <button type="submit" id='btn2' className="btn  mx-3">Login</button>
-                  </div>
-                </form>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="form-group mb-4">
+                <input
+                  type="text"
+                  {...register("username", { required: "Username is required" })}
+                  className="form-control form-control-lg"
+                  placeholder="Username"
+                  style={{ backgroundColor: "#f2f6fc" }}
+                />
+                {errors.username && <p className="text-danger mt-2">{errors.username.message}</p>}
               </div>
-            </div>
+
+              <div className="form-group mb-4">
+                <input
+                  type="password"
+                  {...register("password", { required: "Password is required" })}
+                  className="form-control form-control-lg"
+                  placeholder="Password"
+                  style={{ backgroundColor: "#f2f6fc" }}
+                />
+                {errors.password && <p className="text-danger mt-2">{errors.password.message}</p>}
+              </div>
+
+              <div className="mb-3 text-end">
+                <NavLink to="/contact" className="text-decoration-none text-secondary">
+                  Forgot password?
+                </NavLink>
+              </div>
+
+              <div className="d-flex justify-content-between flex-wrap gap-2">
+  <NavLink to="/signup" className="btn btn-outline-primary px-4">Signup</NavLink>
+  <button type="submit" className="btn btn-primary px-5">Login</button>
+  <NavLink to="/adminlogin" className="btn btn-dark px-4">Admin Login</NavLink>
+</div>
+
+
+            </form>
           </div>
         </div>
-        <div className="col-lg-6 col-sm-12 ">
-         <img className='img-fluid' src="https://img.freepik.com/premium-vector/desktop-mobile-illustration-login-page-data-analysis_559664-335.jpg?w=740" alt="" />
+
+        {/* Right Side - Illustration */}
+        <div className="col-lg-6 mt-5 mt-lg-0 text-center" data-aos="fade-left">
+          <img
+            src="https://img.freepik.com/free-vector/login-concept-illustration_114360-739.jpg?t=st=1712745650~exp=1712749250~hmac=bc770839e63b47b91bc894cd7a32f0fc41636a1f42f7e1864f3c18d35c4eebd3&w=740"
+            alt="Login Visual"
+            className="img-fluid rounded-4 shadow-sm"
+            style={{ maxHeight: '480px' }}
+          />
+          <p className="text-muted mt-3">
+            Empowering communities through smart food donation systems.
+          </p>
         </div>
       </div>
     </div>
