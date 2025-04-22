@@ -17,7 +17,7 @@ const CartPage = () => {
 
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/cart", {
+        const response = await axios.get("https://pharmacy-2-bzdr.onrender.com/cart", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

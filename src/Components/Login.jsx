@@ -13,7 +13,7 @@ const Login = () => {
   const onSubmit = async (data) => {
 
 
-    await axios.post(`http://localhost:3000/login`, data, { withCredentials: true })
+    await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data, { withCredentials: true })
 
     .then((res) => {
       console.log(res.data);

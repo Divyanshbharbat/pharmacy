@@ -76,7 +76,7 @@ const Home = () => {
       }
 
       const response = await axios.post(
-        'http://localhost:3000/add',
+        'https://pharmacy-2-bzdr.onrender.com/add',
         { medicine },
         {
           headers: {

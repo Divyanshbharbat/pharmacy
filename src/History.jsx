@@ -14,7 +14,7 @@ const History = () => {
     }
 
     axios
-      .get("http://localhost:3000/order/history", {
+      .get("https://pharmacy-2-bzdr.onrender.com/order/history", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
