@@ -74,7 +74,7 @@ const Home = () => {
         return;
       }
    // 'https://pharmacy-2-bzdr.onrender.com/add',
-      const response = await axios.post('http://localhost:3000/add',
+      const response = await axios.post('https://pharmacy-2-bzdr.onrender.com/order/add',
         { medicine },
         {
           headers: {
