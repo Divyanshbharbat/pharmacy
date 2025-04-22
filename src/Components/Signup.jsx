@@ -17,7 +17,7 @@ const Signup = () => {
 
     try {
 
-      const response = await axios.post(`https://pharmacy-2-bzdr.onrender.com/signup`, data);
+      const response = await axios.post(`https://pharmacy-2-bzdr.onrender.com/signup`, data,{ withCredentials: true });
 
       if (response.data === 'success') {
         toast.success("Your Account Created Successfully")
