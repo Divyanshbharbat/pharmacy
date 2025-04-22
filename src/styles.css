@@ -1,0 +1,90 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background: #f3f8fa;
+    color: #333;
+  }
+  
+  .landing {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(to right, #3a7bd5, #00d2ff);
+    color: white;
+  }
+  
+  button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+  }
+  /* Green gradient background for Home */
+.home-gradient {
+    background: linear-gradient(135deg, #28a745, #218838, #1e7e34);
+  }
+  
+  /* Gradient for the add-to-cart guide section */
+  .gradient-section {
+    background: linear-gradient(135deg, #198754, #157347, #0f5132);
+  }
+  
+  /* Navbar transition override (optional for smoothness) */
+  .navbar {
+    transition: all 0.4s ease-in-out;
+  }
+  
+  
+  .card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 12px;
+    background-color: #fff;
+    width: 250px;
+  }
+  .landing-section {
+    background: linear-gradient(to right, #83a4d4, #b6fbff);
+    color: #001f3f;
+  }
+  
+  section h2 {
+    font-weight: 700;
+    color: #0d6efd;
+  }
+  .hero-gradient {
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+  }
+  
+  .gradient-section {
+    background: linear-gradient(to right, #38b6ff, #6f86d6);
+  }
+  
+  .testimonial-gradient {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+  }
+  .home-gradient {
+    background: linear-gradient(to right, #00b4db, #0083b0);
+  }
+  
+  .gradient-section {
+    background: linear-gradient(to right, #43cea2, #185a9d);
+  }
+  /* styles.css */
+.hero-section {
+    background: linear-gradient(to right, #43cea2, #185a9d);
+    color: white;
+  }
+  
+  .gradient-section {
+    background: linear-gradient(to right, #007bff, #6610f2);
+    color: white;
+  }
+  
+  .medicine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  

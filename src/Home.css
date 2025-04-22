@@ -1,0 +1,15 @@
+
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s ease;
+}
+
+footer {
+  background: linear-gradient(135deg, #006400, #2e8b57);
+}
