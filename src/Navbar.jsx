@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import 'boxicons/css/boxicons.min.css';
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -58,7 +60,8 @@ const Navbar = () => {
             </li>
             <li className="nav-item mx-2">
               <NavLink className="nav-link text-white fw-semibold" to="/cart" onClick={handleNavLinkClick}>
-                cart
+              <i className='bx bx-cart-alt bx-sm' title="View Cart"></i>
+
               </NavLink>
             </li>
             <li className="nav-item mx-2">

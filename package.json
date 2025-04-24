@@ -17,6 +17,7 @@
     "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.5",
+    "boxicons": "^2.1.4",
     "chart.js": "^4.4.8",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

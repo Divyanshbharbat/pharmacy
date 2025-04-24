@@ -36,17 +36,17 @@ const PharmacyLandingPage = () => {
           <h2 className="text-center mb-4" data-aos="fade-up">Why Choose Us?</h2>
           <Row className="text-center">
             <Col md={4} data-aos="fade-up">
-              <img src="https://img.icons8.com/ios-filled/100/0f9b0f/medicine.png" alt="Genuine Medicines" />
+             
               <h5 className="mt-3">Genuine Medicines</h5>
               <p>All medicines are sourced directly from licensed pharmacies and manufacturers.</p>
             </Col>
             <Col md={4} data-aos="fade-up" data-aos-delay="100">
-              <img src="https://img.icons8.com/ios-filled/100/0f9b0f/delivery.png" alt="Fast Delivery" />
+
               <h5 className="mt-3">Fast Delivery</h5>
               <p>Receive your orders within 24–48 hours in all major cities.</p>
             </Col>
             <Col md={4} data-aos="fade-up" data-aos-delay="200">
-              <img src="https://img.icons8.com/ios-filled/100/0f9b0f/customer-support.png" alt="24/7 Support" />
+    
               <h5 className="mt-3">24/7 Support</h5>
               <p>Chat with pharmacists anytime for prescription and health advice.</p>
             </Col>
