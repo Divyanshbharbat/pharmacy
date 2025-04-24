@@ -62,11 +62,7 @@ app.post("/add", jwtMiddleware, async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     // Check if the medicine is already in the cart
-    const isMedicineInCart = user.cart.some(item => item.name === medicine.name); 
-  
-    if (isMedicineInCart) {
-      return res.status(400).json({ message: "This medicine is already in your cart." });
-    }
+   
 
     // Add the medicine to the user's cart (storing the full product data)
     user.cart.push(medicine);
