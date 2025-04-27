@@ -77,9 +77,19 @@ app.post("/add", jwtMiddleware, async (req, res) => {
     res.status(500).json({ message: "Error adding product to cart" });
   }
 });
+import nodemailer from 'nodemailer' // make sure you require nodemailer
+
+// Setup nodemailer transporter (example using Gmail)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'bharbatdivyansh1@gmail.com', // replace with your email
+    pass: 'uejuxvsnsyvotsgg',    // use app password, not your main password
+  },
+});
+
 app.post("/place/order", jwtMiddleware, async (req, res) => {
   try {
-  
     const { userDetails, address, phone, products, totalPrice } = req.body;
 
     if (!products || products.length === 0) {
@@ -97,16 +107,40 @@ app.post("/place/order", jwtMiddleware, async (req, res) => {
     });
 
     const savedOrder = await newOrder.save();
-   
-    let user2=await User.findOne({username:req.user.username})
+
+    let user2 = await User.findOne({ username: req.user.username });
 
     // Link order to user
     await User.findByIdAndUpdate(user2._id, {
       $push: { orders: savedOrder._id },
-      $set: { cart: [] }, // clear cart after order
+      $set: { cart: [] },
     });
 
-    res.status(201).json({ message: "Order placed", order: savedOrder });
+    // Send confirmation email
+    const mailOptions = {
+      from: `${user2.username}`, // your email
+      to: 'bharbatdivyansh1@gmail.com',              // assuming user2 has an email field
+      subject: 'Order Confirmation',
+      html: `
+        <h1>Thank you for your order!</h1>
+        <p>Hi ${user2.username},</p>
+        <p>Your order has been placed successfully. Here are your order details:</p>
+        <ul>
+          ${products.map(product => `<li>${product.name} - Quantity: ${product.quantity}</li>`).join('')}
+        </ul>
+        <p><strong>Total Price:</strong> $${totalPrice}</p>
+        <p>We will deliver your order to:</p>
+        <p>${address}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p>Status: <strong>Pending</strong></p>
+        <br/>
+        <p>Thank you for shopping with us!</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(201).json({ message: "Order placed and confirmation email sent", order: savedOrder });
   } catch (err) {
     console.error("Order placement error:", err);
     res.status(500).json({ message: "Failed to place order" });
