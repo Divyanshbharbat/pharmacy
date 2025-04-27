@@ -21,7 +21,7 @@ const Order = () => {
     }
 
     axios
-      .get("https://pharmacy-2-bzdr.onrender.com/cart", {
+      .get("https://pharmacy-2-zfvd.onrender.com/cart", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,7 +66,7 @@ const Order = () => {
     };
 
     axios
-      .post("https://pharmacy-2-bzdr.onrender.com/place/order", orderData, {
+      .post("https://pharmacy-2-zfvd.onrender.com/place/order", orderData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

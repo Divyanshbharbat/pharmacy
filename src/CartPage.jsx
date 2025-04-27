@@ -18,7 +18,7 @@ const CartPage = () => {
 
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get("https://pharmacy-2-bzdr.onrender.com/cart", {
+        const response = await axios.get("https://pharmacy-2-zfvd.onrender.com/cart", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -37,7 +37,7 @@ const CartPage = () => {
   const handleDelete = async (productName) => {
     try {
       // const response = await axios.delete(`http://localhost:3000/cart/${productName}`, {
-      const response = await axios.delete(`https://pharmacy-2-bzdr.onrender.com/cart/${productName}`, {
+      const response = await axios.delete(`https://pharmacy-2-zfvd.onrender.com/cart/${productName}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

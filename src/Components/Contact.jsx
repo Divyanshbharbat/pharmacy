@@ -35,7 +35,7 @@ const ContactUs = () => {
         // Send the form data to the server using axios
         //const response = await axios.post("http://localhost:3000/api/contact/submit", formData);
         // const response = await axios.post(`${import.meta.env.VITE_F_URL}/api/contact/submit`, formData);
-        const response = await axios.post(`https://pharmacy-2-bzdr.onrender.com/contact/submit`, formData);
+        const response = await axios.post(`https://pharmacy-2-zfvd.onrender.com/contact/submit`, formData);
         console.log(response.data); // Log the server response
         setShowModal(true); // Show modal on successful submission
         setValidated(false);

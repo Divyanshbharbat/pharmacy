@@ -14,7 +14,7 @@ const History = () => {
     }
 
     axios
-      .get("https://pharmacy-2-bzdr.onrender.com/order/history", {
+      .get("https://pharmacy-2-zfvd.onrender.com/order/history", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

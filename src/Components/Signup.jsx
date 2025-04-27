@@ -25,7 +25,7 @@ useEffect(()=>{
       // const response = await axios.post(`https://pharmacy-2-bzdr.onrender.com/signup`, data,{
       //   withCredentials:true,
       // });
-      const response = await axios.post('https://pharmacy-2-bzdr.onrender.com/signup', data,{
+      const response = await axios.post('https://pharmacy-2-zfvd.onrender.com/signup', data,{
         withCredentials:true,
       });
       if (response.data === 'success') {

@@ -25,7 +25,7 @@ useEffect(()=>{
     try {
      //  await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data, { withCredentials: true })
       // const res = await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data,{withCredentials:true,});
-      const res = await axios.post(`https://pharmacy-2-bzdr.onrender.com/login`, data,{withCredentials:true,});
+      const res = await axios.post(`https://pharmacy-2-zfvd.onrender.com/login`, data,{withCredentials:true,});
       if (res.data.message === "success") {
         localStorage.setItem("cookie", res.data.token);
         toast.success("Login Successful 🎉");
